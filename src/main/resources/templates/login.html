@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="/css/login.css"> <!-- Optional: Add your custom styles -->
+</head>
+<body>
+<div>
+    <h2>Login</h2>
+    <form th:action="@{/login}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required value="admin"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required value="StiffMedal30"><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <div th:if="${error}">
+        <p style="color:red;">Invalid username or password</p>
+    </div>
+
+    <div th:if="${logout}">
+        <p style="color:green;">You have been logged out successfully</p>
+    </div>
+</div>
+
+<!-- Link to your custom JS file -->
+<script src="/js/login.js"></script>
+</body>
+</html>

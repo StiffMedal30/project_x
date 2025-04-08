@@ -1,0 +1,34 @@
+spring:
+  spring:
+    resources:
+      static-locations: classpath:/static/
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false  # Optional: Disable template caching in dev mode
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yml
+    drop-first: false
+  application:
+    name:Project X
+  datasource:
+    url: jdbc:postgresql://localhost:5432/project_x
+    username: postgres
+    password: StiffMedal30
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    jwt:
+      secret: your_jwt_secret
+      expiration: 86400000  # 1 day in milliseconds
+
+server:
+  port: 8080

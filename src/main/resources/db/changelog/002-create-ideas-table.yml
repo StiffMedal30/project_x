@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: cdotze2
+      changes:
+        - createTable:
+            tableName: ideas
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: audio_url
+                  type: TEXT
+              - column:
+                  name: transcription_text
+                  type: TEXT
+              - column:
+                  name: refined_text
+                  type: TEXT
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+              - column:
+                  name: modified_at
+                  type: TIMESTAMP
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+              - column:
+                  name: modified_by
+                  type: VARCHAR(255)

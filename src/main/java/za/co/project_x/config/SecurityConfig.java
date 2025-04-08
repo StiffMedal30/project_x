@@ -1,0 +1,71 @@
+package za.co.project_x.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import za.co.project_x.service.CustomUserDetailsService;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow login page and static resources
+                        .requestMatchers("/").authenticated()
+                        .anyRequest().authenticated()  // Require authentication for all other pages
+                ).formLogin()
+                .loginPage("/login") // Custom login page URL
+                .loginProcessingUrl("/login") // URL where the login form submits
+                .defaultSuccessUrl("/", true) // Redirect to this URL after a successful login
+                .failureUrl("/login?error=true") // Redirect to login page with an error parameter on failure
+                .permitAll()
+                .and().logout()
+                .permitAll()  // Allow everyone to access the logout page
+                .and().exceptionHandling()
+                    .accessDeniedPage("/error"); // Redirect to error page on access denied
+
+        return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return customUserDetailsService; // Ensure you're returning your custom UserDetailsService
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(customUserDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customUserDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
+    }
+}
