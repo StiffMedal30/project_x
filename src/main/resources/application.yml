@@ -10,8 +10,8 @@ spring:
     cache: false  # Optional: Disable template caching in dev mode
   liquibase:
     enabled: true
-    change-log: db/changelog/db.changelog-master.yml
-    drop-first: false
+    change-log: db/db.changelog-master.yml
+    drop-first: true
   application:
     name:Project X
   datasource:

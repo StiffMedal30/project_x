@@ -4,8 +4,8 @@ databaseChangeLog:
       author: cdotze2
       changes:
         - createIndex:
-            indexName: idx_ideas_user_id
+            indexName: idx_ideas_owner_id
             tableName: ideas
             columns:
               - column:
-                  name: user_id
+                  name: owner_id

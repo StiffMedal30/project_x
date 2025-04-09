@@ -14,6 +14,26 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: pk_user_id
               - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: modified_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+              - column:
+                  name: modified_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: true
+              - column:
                   name: email
                   type: varchar(255)
                   constraints:
