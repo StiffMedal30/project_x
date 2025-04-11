@@ -2,16 +2,26 @@ package za.co.project_x.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import za.co.project_x.entities.base.BaseEntity;
+import za.co.project_x.enums.Role;
 
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "app_user")
+@Getter
+@Setter
 public class AppUser extends BaseEntity implements UserDetails {
 
     @Column(name = "email", nullable = false)
@@ -22,8 +32,9 @@ public class AppUser extends BaseEntity implements UserDetails {
     private String username;
     @Column(name = "password", nullable = false)
     private String password;
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private String role;
+    private Role role;
     @Column(name = "isAccountNonExpired", nullable = false)
     private boolean isAccountNonExpired;
     @Column(name = "isEnabled", nullable = false)
@@ -32,46 +43,11 @@ public class AppUser extends BaseEntity implements UserDetails {
     private boolean isAccountNonLocked;
     @Column(name = "isCredentialsNonExpired", nullable = false)
     private boolean isCredentialsNonExpired;
+    @OneToMany(mappedBy = "owner")
+    private List<Idea> ownedIdeas;
+    @ManyToMany(mappedBy = "collaborators")
+    private List<Idea> collaboratingIdeas;
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     // Spring Security's UserDetails methods
 

@@ -27,6 +27,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow login page and static resources
                         .requestMatchers("/").authenticated()
+                        .requestMatchers("/owner/**").hasRole("OWNER")
                         .anyRequest().authenticated()  // Require authentication for all other pages
                 ).formLogin()
                 .loginPage("/login") // Custom login page URL
