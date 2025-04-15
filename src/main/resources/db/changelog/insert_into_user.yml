@@ -15,16 +15,16 @@ databaseChangeLog:
                   value: 'christiaandotze@gmail.com'
               - column:
                   name: name
-                  value: 'admin'
+                  value: 'christiaan'
               - column:
                   name: username
-                  value: 'christiaan'
+                  value: 'admin'
               - column:
                   name: password
                   value: '$2a$10$orJwRsj4ZMBpnaseYMOEPeT2Vr/6D7.FYVEwcquj8acHremzwdPRa'  # Your bcrypt password hash
               - column:
                   name: role
-                  value: 'OWNER'
+                  value: 'ADMIN'
               - column:
                   name: is_account_non_expired
                   value: true

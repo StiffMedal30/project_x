@@ -1,11 +1,11 @@
 databaseChangeLog:
   - changeSet:
       id: 3
-      author: cdotze2
+      author: Christiaan Dotze
       changes:
         - createIndex:
-            indexName: idx_ideas_owner_id
+            indexName: idx_ideas_admin_id
             tableName: ideas
             columns:
               - column:
-                  name: owner_id
+                  name: admin_id

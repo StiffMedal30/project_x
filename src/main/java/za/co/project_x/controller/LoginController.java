@@ -1,5 +1,7 @@
 package za.co.project_x.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,11 @@ public class LoginController {
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
                         Model model) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Principal: " + authentication.getPrincipal());  // User details
+        System.out.println("Authorities: " + authentication.getAuthorities());
+
         if (error != null) {
             model.addAttribute("error", "Invalid username or password");
         }

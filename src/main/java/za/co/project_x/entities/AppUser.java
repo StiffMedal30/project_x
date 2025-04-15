@@ -43,8 +43,8 @@ public class AppUser extends BaseEntity implements UserDetails {
     private boolean isAccountNonLocked;
     @Column(name = "isCredentialsNonExpired", nullable = false)
     private boolean isCredentialsNonExpired;
-    @OneToMany(mappedBy = "owner")
-    private List<Idea> ownedIdeas;
+    @OneToMany(mappedBy = "admin")
+    private List<Idea> adminIdeas;
     @ManyToMany(mappedBy = "collaborators")
     private List<Idea> collaboratingIdeas;
 

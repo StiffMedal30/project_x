@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1
-      author: christiaan dotze
+      author: christiaan Dotze
       changes:
         - createTable:
             tableName: app_user
