@@ -20,6 +20,10 @@
         <button type="submit">Login</button>
     </form>
 
+    <div>
+        <p>Don't have a profile yet? Create one <a href="/register-user">here</a></p>
+    </div>
+
     <div th:if="${error}">
         <p style="color:red;">Invalid username or password</p>
     </div>
@@ -30,6 +34,6 @@
 </div>
 
 <!-- Link to your custom JS file -->
-<script src="/js/login.js"></script>
+<!--<script src="/js/login.js"></script>-->
 </body>
 </html>

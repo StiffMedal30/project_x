@@ -1,52 +1,47 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Project X</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/css/bootstrap.min.css">
+    <title>All Ideas</title>
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
-
 <div class="container">
-    <header class="my-4">
-        <h1>Welcome to Project X</h1>
-    </header>
+    <h1>All Ideas</h1>
 
-    <div>
+    <!-- List of all ideas -->
+    <div class="idea-list">
         <table>
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created By</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
             <tr th:each="idea : ${ideas}">
-                <td th:text="${idea.title}"></td>
-                <td th:text="${idea.description}"></td>
+                <td><p th:text="${idea.title}">Idea Title</p></td>
+                <td><p th:text="${idea.description}">Idea Description</p></td>
+                <td><p><strong>Created by:</strong> <span th:text="${idea.createdBy}">Username</span></p></td>
                 <td>
-                    <a th:href="@{'/ideas/' + ${idea.id} + '/edit'}">Edit</a>
+                    <a th:href="@{'/edit/' + ${idea.id}}" class="btn btn-edit">Edit</a>
 
-                    <button disabled
-                            th:if="${#authorization.expression('hasRole(''COLLABORATOR'')')}"
-                            style="color: grey;">Delete
-                    </button>
-
-                    <form th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
-                          th:action="@{'/ideas/' + ${idea.id} + '/delete'}"
-                          method="post">
-                        <button type="submit">Delete</button>
-                    </form>
+                    <!-- Delete button only for admins -->
+                    <sec:authorize access="hasRole('ADMIN')">
+                        <form th:action="@{/delete/{id}(id=${idea.id})}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-delete">Delete</button>
+                        </form>
+                    </sec:authorize>
                 </td>
             </tr>
+            </tbody>
         </table>
-
-        <!-- Admins see create button -->
-        <div sec:authorize="hasRole('ADMIN')">
-            <a href="/ideas/create">Create New Idea</a>
-        </div>
     </div>
 
-
-    <footer class="my-4">
-        <p>Project X - Developed by Christiaan Dotze</p>
-    </footer>
+    <a href="/create" class="btn">Create New Idea</a>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,17 +1,32 @@
 spring:
-  liquibase:
-    enabled: true
-    change-log: db/changelog/db.changelog-master.yml
   application:
     name:Project X
+  resources:
+    static-locations: classpath:/static/
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML
+    encoding: UTF-8
+    cache: false  # Optional: Disable template caching in dev mode
+  liquibase:
+    enabled: true
+    change-log: db/db.changelog-master.yml
+    drop-first: true
   datasource:
     url: jdbc:postgresql://localhost:5432/project_x
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -19,6 +34,11 @@ spring:
     jwt:
       secret: ${JWT_SECRET}
       expiration: 86400000  # 1 day in milliseconds
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
 
 server:
   port: 8080

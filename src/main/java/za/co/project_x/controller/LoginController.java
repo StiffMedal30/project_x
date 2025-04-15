@@ -1,12 +1,12 @@
 package za.co.project_x.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.exceptions.TemplateInputException;
+import za.co.project_x.entities.AppUser;
 
 @Controller
 public class LoginController {
@@ -15,10 +15,6 @@ public class LoginController {
     public String login(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
                         Model model) {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Principal: " + authentication.getPrincipal());  // User details
-        System.out.println("Authorities: " + authentication.getAuthorities());
 
         if (error != null) {
             model.addAttribute("error", "Invalid username or password");
@@ -41,5 +37,16 @@ public class LoginController {
     @RequestMapping("/logoutSuccess")
     public String logoutSuccess() {
         return "login?logout=true";  // Redirect to login page with logout message
+    }
+
+    @GetMapping("/test-error")
+    public String testError() {
+        throw new TemplateInputException("This is a simulated error");
+    }
+
+    @GetMapping("/register-user")
+    public String register(Model model) {
+        model.addAttribute("user", new AppUser());
+        return "register";
     }
 }

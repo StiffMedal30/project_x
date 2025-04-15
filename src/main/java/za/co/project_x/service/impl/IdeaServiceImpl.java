@@ -1,7 +1,6 @@
 package za.co.project_x.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import za.co.project_x.entities.AppUser;
 import za.co.project_x.entities.Idea;
@@ -25,7 +24,7 @@ public class IdeaServiceImpl implements IdeaService {
     }
 
     @Override
-    public String inviteCollaborator(Long id, String email) {
+    public void inviteCollaborator(Long id, String email) {
         Idea idea = ideaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Idea not found"));
 
@@ -34,21 +33,39 @@ public class IdeaServiceImpl implements IdeaService {
 
         idea.getCollaborators().add(collaborator);
         ideaRepository.save(idea);
-        return HttpStatus.OK.toString();
     }
 
-    public Idea createIdea(String title, String description, String creatorEmail) {
-        Optional<AppUser> creatorOpt = userRepository.findByEmail(creatorEmail);
-        if (creatorOpt.isEmpty()) {
-            throw new RuntimeException("User not found: " + creatorEmail);
+    public Idea createIdea(String title, String description, String user) {
+        Optional<AppUser> appUser = userRepository.findByUsername(user);
+        if (appUser.isEmpty()) {
+            throw new RuntimeException("User not found: " + user);
         }
-        AppUser creator = creatorOpt.get();
 
-        Idea idea = new Idea(title, description, creator);
+        Idea idea = new Idea();
+        idea.setTitle(title);
+        idea.setDescription(description);
+        idea.setAdmin(appUser.get());
         return ideaRepository.save(idea);
     }
 
     public List<Idea> getAllIdeas() {
         return ideaRepository.findAll();
+    }
+
+    @Override
+    public Optional<Idea> findById(Long id) {
+        return ideaRepository.findById(id);
+    }
+
+    @Override
+    public void updateIdea(Long id, String title, String description) {
+        Optional<Idea> optionalIdea = ideaRepository.findById(id);
+        Idea idea = optionalIdea.orElse(new Idea());
+        ideaRepository.save(idea);
+    }
+
+    @Override
+    public void deleteIdea(Long id) {
+        ideaRepository.deleteById(id);
     }
 }

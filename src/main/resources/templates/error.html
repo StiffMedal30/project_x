@@ -8,9 +8,9 @@
 </head>
 <body>
 <div class="error-container">
-    <h1>Error Occurred</h1>
-    <p>An error occurred while processing your request.</p>
-    <p><strong>Error Details:</strong> <span th:text="${error}">Error message</span></p>
+    <h1>Error</h1>
+    <p th:text="${error}">An unexpected error occurred.</p>
+    <p>Please contact support if this issue persists.</p>
     <a href="/">Go to Home</a>
 </div>
 </body>

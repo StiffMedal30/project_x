@@ -43,5 +43,7 @@ public class Idea extends BaseEntity {
     public Idea(String title, String description, AppUser creator) {
         super();
     }
+
+
 }
 

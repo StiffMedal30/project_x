@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -17,6 +18,7 @@ import za.co.project_x.service.impl.CustomUserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -26,11 +28,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .requestMatchers("/login", "/css/**", "/js/**", "/images/**").permitAll()  // Allow login page and static resources
+                .requestMatchers("/login", "/register-user" ,"/css/**", "/js/**", "/images/**").permitAll()  // Allow login page and static resources
                 .requestMatchers("/").authenticated()  // Require authentication for the home page
                 .requestMatchers("/ideas").authenticated()
-                .requestMatchers("/ideas/create").hasRole("ADMIN")
-                .requestMatchers("/ideas/**/delete").hasRole("ADMIN")
+                .requestMatchers("/create").hasRole("ADMIN")
+                .requestMatchers("/*/delete").hasRole("ADMIN")
                 .anyRequest().authenticated()  // Require authentication for all other pages
                 .and()
                 .formLogin()

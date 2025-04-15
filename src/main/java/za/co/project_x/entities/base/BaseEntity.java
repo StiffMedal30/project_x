@@ -7,10 +7,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+@Getter
+@Setter
 public class BaseEntity {
 
     @Id
@@ -34,51 +40,19 @@ public class BaseEntity {
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.modifiedAt = now;
-        // You can automatically set createdBy and modifiedBy here if needed, for example, by fetching from the security context
+        String username = getCurrentUsername();
+        this.setCreatedBy(username);
+        this.setModifiedBy(username);
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.modifiedAt = LocalDateTime.now();
+        this.setModifiedAt(LocalDateTime.now());
+        this.setModifiedBy(getCurrentUsername());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
-
-    public LocalDateTime getModifiedAt() {
-        return modifiedAt;
-    }
-
-    public void setModifiedAt(LocalDateTime modifiedAt) {
-        this.modifiedAt = modifiedAt;
+    private String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (auth != null && auth.isAuthenticated()) ? auth.getName() : "system";
     }
 }

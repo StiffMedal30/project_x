@@ -1,7 +1,7 @@
 package za.co.project_x.service;
 
-import org.springframework.stereotype.Service;
+import za.co.project_x.entities.AppUser;
 
-@Service
 public interface UserService {
+    void registerUser(AppUser user);
 }

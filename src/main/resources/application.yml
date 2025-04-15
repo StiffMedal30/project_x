@@ -1,7 +1,8 @@
 spring:
-  spring:
-    resources:
-      static-locations: classpath:/static/
+  application:
+    name:Project X
+  resources:
+    static-locations: classpath:/static/
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -11,13 +12,17 @@ spring:
   liquibase:
     enabled: true
     change-log: db/db.changelog-master.yml
-    drop-first: true
-  application:
-    name:Project X
+    drop-first: false
   datasource:
     url: jdbc:postgresql://localhost:5432/project_x
     username: postgres
     password: StiffMedal30
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 10
+      auto-commit: true
+      transaction-isolation: TRANSACTION_READ_COMMITTED
   jpa:
     hibernate:
       ddl-auto: update
@@ -29,6 +34,15 @@ spring:
     jwt:
       secret: your_jwt_secret
       expiration: 86400000  # 1 day in milliseconds
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
+#  logging:
+#    level:
+#      org.springframework.web.servlet.PageNotFound: ERROR
+#      org.springframework.web.servlet.DispatcherServlet: ERROR
 
 server:
   port: 8080
