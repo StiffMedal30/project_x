@@ -14,6 +14,16 @@
 - 📱 Web interface (React) & mobile interface (React Native)
 
 ---
+## 👤 Role-Based Access Control
+
+| Permission               | OWNER ✅ | COLLABORATOR ✅ |
+|--------------------------|:--------:|:----------------:|
+| View Ideas               | ✅       | ✅               |
+| Create / Edit Ideas      | ✅       | ✅               |
+| Delete Ideas             | ✅       | ❌               |
+| Invite Collaborators     | ✅       | ❌               |
+
+---
 
 ## 🧱 Tech Stack
 

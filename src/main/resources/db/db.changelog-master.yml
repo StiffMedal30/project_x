@@ -4,6 +4,8 @@ databaseChangeLog:
       file: classpath:/db/changelog/create/001-create-users-table.yml
   - include:
       file: classpath:/db/changelog/create/002-create-ideas-table.yml
+  - include:
+      file: classpath:/db/changelog/create/003-create-idea-collaborator.yml
 
 # - CONSTRAINTS YML
   - include:
