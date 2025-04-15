@@ -38,13 +38,13 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: owner_id
+                  name: admin_id
                   type: BIGINT
                   constraints:
                     nullable: false
         - addForeignKeyConstraint:
             baseTableName: ideas  # Should be pluralized to match table naming convention
-            baseColumnNames: owner_id
+            baseColumnNames: admin_id
             referencedTableName: app_user
             referencedColumnNames: id
-            constraintName: fk_idea_owner
+            constraintName: fk_idea_admin

@@ -25,8 +25,8 @@ public class Idea extends BaseEntity {
     @Column(name = "description", nullable = false)
     private String description;
     @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private AppUser owner;
+    @JoinColumn(name = "admin_id")
+    private AppUser admin;
 
     @ManyToMany
     @JoinTable(
@@ -35,5 +35,13 @@ public class Idea extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private final Set<AppUser> collaborators = new HashSet<>();
+
+
+    public Idea() {
+    }
+
+    public Idea(String title, String description, AppUser creator) {
+        super();
+    }
 }
 

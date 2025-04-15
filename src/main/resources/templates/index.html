@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +13,34 @@
         <h1>Welcome to Project X</h1>
     </header>
 
-    <section>
-        <h2>About Project X</h2>
-        <p>This is a proof of concept application built with Spring Boot, Liquibase, PostgreSQL, and Spring Security.</p>
-        <p>More details will be added as the project grows.</p>
-    </section>
+    <div>
+        <table>
+            <tr th:each="idea : ${ideas}">
+                <td th:text="${idea.title}"></td>
+                <td th:text="${idea.description}"></td>
+                <td>
+                    <a th:href="@{'/ideas/' + ${idea.id} + '/edit'}">Edit</a>
+
+                    <button disabled
+                            th:if="${#authorization.expression('hasRole(''COLLABORATOR'')')}"
+                            style="color: grey;">Delete
+                    </button>
+
+                    <form th:if="${#authorization.expression('hasRole(''ADMIN'')')}"
+                          th:action="@{'/ideas/' + ${idea.id} + '/delete'}"
+                          method="post">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Admins see create button -->
+        <div sec:authorize="hasRole('ADMIN')">
+            <a href="/ideas/create">Create New Idea</a>
+        </div>
+    </div>
+
 
     <footer class="my-4">
         <p>Project X - Developed by Christiaan Dotze</p>

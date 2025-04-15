@@ -16,12 +16,12 @@
 ---
 ## 👤 Role-Based Access Control
 
-| Permission               | OWNER ✅ | COLLABORATOR ✅ |
-|--------------------------|:--------:|:----------------:|
-| View Ideas               | ✅       | ✅               |
-| Create / Edit Ideas      | ✅       | ✅               |
-| Delete Ideas             | ✅       | ❌               |
-| Invite Collaborators     | ✅       | ❌               |
+| Permission               | ADMIN ✅ | COLLABORATOR ✅ |
+|--------------------------|:-------:|:----------------:|
+| View Ideas               |    ✅    | ✅               |
+| Create / Edit Ideas      |    ✅    | ✅               |
+| Delete Ideas             |    ✅    | ❌               |
+| Invite Collaborators     |    ✅    | ❌               |
 
 ---
 
