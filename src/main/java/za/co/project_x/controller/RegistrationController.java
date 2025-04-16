@@ -21,6 +21,9 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute("user") AppUser appUser, BindingResult bindingResult) {
+        System.out.println("=========================================================");
+        System.out.println("Did you see me?");
+        System.out.println("=========================================================");
         if (bindingResult.hasErrors()) {
             return "register"; // Return to the registration page if there are errors
         }

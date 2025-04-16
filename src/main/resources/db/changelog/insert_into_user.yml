@@ -8,9 +8,6 @@ databaseChangeLog:
             tableName: app_user
             columns:
               - column:
-                  name: id
-                  value: 1
-              - column:
                   name: email
                   value: 'christiaandotze@gmail.com'
               - column:

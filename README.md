@@ -220,6 +220,39 @@ _This project is in active development as a personal initiative alongside a full
 
 ---
 
+# API Endpoints
+
+This document provides a list of all the available endpoints in the application.
+
+## Endpoints
+
+### General Endpoints
+- **GET /**: Home page
+- **GET /home**: Home page (alternative route)
+- **GET /login**: Login page
+- **GET /register-user**: User registration page
+- **POST /register**: Register a new user
+- **POST /logout**: Logout the current user
+- **GET /logoutSuccess**: Logout success page
+- **GET /error**: Error page (produces `text/html`)
+
+### Idea Management
+- **GET /create**: Create a new idea (requires authentication)
+- **POST /add-idea**: Add a new idea
+- **GET /edit/{id}**: Edit an idea by ID
+- **POST /edit/{id}**: Submit edits for an idea by ID
+- **POST /delete/{id}**: Delete an idea by ID
+- **GET /idea/create**: Create idea page
+
+### Collaboration
+- **POST /collaborator/{id}/invite**: Invite a collaborator to an idea by ID
+
+### Testing and Debugging
+- **GET /test-error**: Test error handling
+- **GET /endpoints**: List all registered endpoints (for debugging purposes)
+
+---
+
 ## 📄 License
 
 MIT License – free to use and modify.

@@ -4,11 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,27 +28,33 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .requestMatchers("/login", "/register-user" ,"/css/**", "/js/**", "/images/**").permitAll()  // Allow login page and static resources
-                .requestMatchers("/").authenticated()  // Require authentication for the home page
-                .requestMatchers("/ideas").authenticated()
-                .requestMatchers("/create").hasRole("ADMIN")
-                .requestMatchers("/*/delete").hasRole("ADMIN")
-                .anyRequest().authenticated()  // Require authentication for all other pages
-                .and()
-                .formLogin()
-                .loginPage("/login")  // Custom login page URL
-                .loginProcessingUrl("/login")  // URL where the login form submits
-                .defaultSuccessUrl("/", false)  // Redirect to homepage after successful login
-                .failureUrl("/login?error=true")  // Redirect to login page with error if login fails
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll()  // Allow everyone to access the logout page
-                .and()
-                .exceptionHandling()
-                .accessDeniedPage("/error");  // Redirect to error page on access denied
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/login", "/register-user", "/register", "/css/**", "/js/**", "/images/**","/actuator/**").permitAll()
+                        .requestMatchers("/").authenticated()
+                        .requestMatchers("/ideas").authenticated()
+                        .requestMatchers("/create").hasRole("ADMIN")
+                        .requestMatchers("/*/delete").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/", false)
+                        .failureUrl("/login?error=true")
+                        .permitAll()
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout=true")
+                        .permitAll()
+                )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/error")
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                )
+                .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
@@ -62,12 +69,12 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .userDetailsService(customUserDetailsServiceImpl)
-                .passwordEncoder(passwordEncoder())
-                .and()
-                .build();
+    public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+
+        return new ProviderManager(daoAuthenticationProvider);
     }
 
     @Bean

@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "idea")
+@Table(name = "ideas")
 @Getter
 @Setter
 public class Idea extends BaseEntity {

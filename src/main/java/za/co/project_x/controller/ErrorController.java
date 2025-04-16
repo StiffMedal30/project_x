@@ -18,8 +18,8 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleTemplateError(TemplateInputException ex, Model model) {
         model.addAttribute("error", "Template not found: " + ex.getMessage());
-        ex.printStackTrace(); // or better
-        LoggerFactory.getLogger(getClass()).error("Unhandled exception", ex);
+//        ex.printStackTrace(); // or better
+        LoggerFactory.getLogger(getClass()).error("Error: ", ex);
         return "error";
     }
 
@@ -27,8 +27,8 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handle404(NoHandlerFoundException ex, Model model) {
         model.addAttribute("error", "The page you are looking for does not exist.");
-        ex.printStackTrace(); // or better
-        LoggerFactory.getLogger(getClass()).error("Unhandled exception", ex);
+//        ex.printStackTrace(); // or better
+        LoggerFactory.getLogger(getClass()).error("Error: ", ex);
         return "error";
     }
 
@@ -37,7 +37,7 @@ public class ErrorController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String handle403(AccessDeniedException ex, Model model) {
         model.addAttribute("error", "You don't have permission to access this page.");
-        ex.printStackTrace(); // or better
+//        ex.printStackTrace(); // or better
         LoggerFactory.getLogger(getClass()).error("Unhandled exception", ex);
         return "error";
     }
@@ -46,9 +46,9 @@ public class ErrorController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handle500(Exception ex, Model model) {
-        model.addAttribute("error", "An unexpected error occurred: " + ex.getMessage());
-        ex.printStackTrace(); // or better
-        LoggerFactory.getLogger(getClass()).error("Unhandled exception", ex);
+        model.addAttribute("error", "An unexpected error occurred");
+//        ex.printStackTrace(); // or better
+        LoggerFactory.getLogger(getClass()).error("Error: ", ex);
         return "error";
     }
 }

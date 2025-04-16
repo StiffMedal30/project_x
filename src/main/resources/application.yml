@@ -1,8 +1,8 @@
 spring:
   application:
-    name:Project X
-  resources:
-    static-locations: classpath:/static/
+    name: Project X
+  #  resources:
+  #    static-locations: classpath:/static/
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -12,11 +12,11 @@ spring:
   liquibase:
     enabled: true
     change-log: db/db.changelog-master.yml
-    drop-first: false
+    drop-first: true
   datasource:
     url: jdbc:postgresql://localhost:5432/project_x
     username: postgres
-    password: StiffMedal30
+    password: StiffMedal30  # Use an environment variable for sensitive data
     driver-class-name: org.postgresql.Driver
     hikari:
       minimum-idle: 5
@@ -26,7 +26,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: false
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -34,15 +34,32 @@ spring:
     jwt:
       secret: your_jwt_secret
       expiration: 86400000  # 1 day in milliseconds
-  mvc:
-    throw-exception-if-no-handler-found: true
   web:
+    throw-exception-if-no-handler-found: true
     resources:
       add-mappings: true
-#  logging:
-#    level:
-#      org.springframework.web.servlet.PageNotFound: ERROR
-#      org.springframework.web.servlet.DispatcherServlet: ERROR
+  management:
+    endpoints:
+      web:
+        base-path: /actuator
+        exposure:
+          include: "*"
+      health:
+        enabled: true
+        show-details: always
+      mappings:
+        enabled: true
+        show-details: always
+      info:
+        enabled: true
+        show-details: always
+  logging:
+    level:
+      org:
+        springframework:
+          web: TRACE
+          boot:
+            actuate: TRACE
 
 server:
   port: 8080
