@@ -7,6 +7,7 @@ import za.co.project_x.entities.Idea;
 import za.co.project_x.repository.IdeaRepository;
 import za.co.project_x.repository.UserRepository;
 import za.co.project_x.service.IdeaService;
+import za.co.project_x.util.OptionalUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,26 +26,20 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     public void inviteCollaborator(Long id, String email) {
-        Idea idea = ideaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Idea not found"));
-
-        AppUser collaborator = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        Idea idea = OptionalUtils.unwrapOptionalOrThrow(ideaRepository.findById(id));
+        AppUser collaborator = OptionalUtils.unwrapOptionalOrThrow(userRepository.findByEmail(email));
 
         idea.getCollaborators().add(collaborator);
         ideaRepository.save(idea);
     }
 
     public Idea createIdea(String title, String description, String user) {
-        Optional<AppUser> appUser = userRepository.findByUsername(user);
-        if (appUser.isEmpty()) {
-            throw new RuntimeException("User not found: " + user);
-        }
+        AppUser appUser = OptionalUtils.unwrapOptionalOrThrow(userRepository.findByUsername(user));
 
         Idea idea = new Idea();
         idea.setTitle(title);
         idea.setDescription(description);
-        idea.setAdmin(appUser.get());
+        idea.setAdmin(appUser);
         return ideaRepository.save(idea);
     }
 
@@ -59,8 +54,9 @@ public class IdeaServiceImpl implements IdeaService {
 
     @Override
     public void updateIdea(Long id, String title, String description) {
-        Optional<Idea> optionalIdea = ideaRepository.findById(id);
-        Idea idea = optionalIdea.orElse(new Idea());
+        Idea idea = OptionalUtils.unwrapOptionalOrThrow(ideaRepository.findById(id));
+        idea.setTitle(title);
+        idea.setDescription(description);
         ideaRepository.save(idea);
     }
 

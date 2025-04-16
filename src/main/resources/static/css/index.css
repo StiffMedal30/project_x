@@ -50,3 +50,49 @@ body {
     background-color: #f44336;
     color: white;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed; /* Forces cells to respect width/max-width */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+td p {
+    margin: 0;
+    white-space: pre-wrap; /* Keeps line breaks in <p> and wraps long text */
+    word-break: break-word;
+}
+
+/* Optional: max-width for description column */
+td:nth-child(2) {
+    max-width: 300px;
+}
+
+/* Button styling for spacing */
+.btn {
+    margin-right: 6px;
+}
+
+.scrollable-description {
+    width: 100%;
+    max-height: 200px; /* Adjust the height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+}

@@ -9,7 +9,9 @@
 <body>
 <div class="container">
     <h1>All Ideas</h1>
-
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit" class="btn">Log out</button>
+    </form>
     <!-- List of all ideas -->
     <div class="idea-list">
         <table>
@@ -24,14 +26,14 @@
             <tbody>
             <tr th:each="idea : ${ideas}">
                 <td><p th:text="${idea.title}">Idea Title</p></td>
-                <td><p th:text="${idea.description}">Idea Description</p></td>
-                <td><p><strong>Created by:</strong> <span th:text="${idea.createdBy}">Username</span></p></td>
+                <td><p th:text="${idea.description}" class="scrollable-description">Idea Description</p></td>
+                <td><p><span th:text="${idea.createdBy}">Username</span></p></td>
                 <td>
                     <a th:href="@{'/edit/' + ${idea.id}}" class="btn btn-edit">Edit</a>
 
                     <!-- Delete button only for admins -->
                     <sec:authorize access="hasRole('ADMIN')">
-                        <form th:action="@{/delete/{id}(id=${idea.id})}" method="post" style="display:inline;">
+                        <form th:action="@{/delete/{id}(id=${idea.id})}" method="post">
                             <button type="submit" class="btn btn-delete">Delete</button>
                         </form>
                     </sec:authorize>

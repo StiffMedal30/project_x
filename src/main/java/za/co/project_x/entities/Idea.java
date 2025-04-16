@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -22,7 +23,8 @@ public class Idea extends BaseEntity {
 
     @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "description", nullable = false)
+    @Lob
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
     @ManyToOne
     @JoinColumn(name = "admin_id")

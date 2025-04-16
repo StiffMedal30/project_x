@@ -47,15 +47,14 @@ public class DashboardController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/edit/{id}")
     public String editIdeaForm(@PathVariable Long id, Model model) {
-        Optional<Idea> idea = ideaService.findById(id);
+        Optional<Idea> optionalIdea = ideaService.findById(id);
+        Idea idea = optionalIdea.orElse(new Idea());
         model.addAttribute("idea", idea);
-        return "idea_form";
+        return "edit_idea_form";
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/edit/{id}")
-    public String updateIdea(@PathVariable Long id, @ModelAttribute Idea ideaForm) {
-        ideaService.updateIdea(id, ideaForm.getTitle(), ideaForm.getDescription());
-        return "redirect:/";
+    @PostMapping("/logout")
+    public String logout(){
+        return "redirect:/login";
     }
 }

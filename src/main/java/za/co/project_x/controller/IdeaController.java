@@ -45,13 +45,19 @@ public class IdeaController {
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/delete/{id}")
     public String deleteIdea(@PathVariable Long id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("Authenticated user: " + auth.getName());
-        System.out.println("Authorities: " + auth.getAuthorities());
-
         Optional<Idea> byId = ideaService.findById(id);
-        System.out.println(id);
         ideaService.deleteIdea(id);
+        return "redirect:/";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/edit/{id}")
+    public String updateIdea(@PathVariable Long id, @ModelAttribute Idea ideaForm) {
+        System.out.println(id);
+        System.out.println(ideaForm.getTitle());
+        System.out.println(ideaForm.getDescription());
+        ideaService.updateIdea(id, ideaForm.getTitle(), ideaForm.getDescription());
+
         return "redirect:/";
     }
 }
